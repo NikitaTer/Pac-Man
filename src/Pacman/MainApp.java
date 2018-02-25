@@ -1,8 +1,5 @@
 package Pacman;
 
-import Pacman.Controller.*;
-import Pacman.Model.*;
-
 import javafx.application.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,6 +16,7 @@ public class MainApp extends Application {
     public void start(Stage prStage) {
         this.prStage = prStage;
         prStage.setTitle("Pacman");
+        prStage.setResizable(false);
 
         AnchorPane rootP = new AnchorPane();
         try {
@@ -31,6 +29,7 @@ public class MainApp extends Application {
         }
 
         Scene scene = new Scene(rootP);
+        scene.getStylesheets().add(getClass().getResource("View/My.css").toExternalForm());
         prStage.setScene(scene);
 
         prStage.show();
