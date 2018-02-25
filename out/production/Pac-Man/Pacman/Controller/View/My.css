@@ -7,6 +7,18 @@
     -fx-text-fill: purple;
 }
 
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-width: 2pt;
+    -fx-border-color: dimgray;
+}
+
+.table-view.column-header-background{
+    -fx-top: 50%;
+    -fx-left: 45%;-fx-background-color: darkgrey;
+    -fx-border-style: solid;
+}
+
 .button {
     -fx-top: 50%;
     -fx-left: 45%;

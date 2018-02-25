@@ -20,8 +20,8 @@
          <children>
             <TableView fx:id="RecordsTable" prefHeight="200.0" prefWidth="200.0">
               <columns>
-                <TableColumn fx:id="NicknamesTableCol" prefWidth="77.0" text="Игрок" />
-                <TableColumn fx:id="RecordsTableCol" prefWidth="73.0" text="Рекорд" />
+                <TableColumn fx:id="NicknamesTableCol" prefWidth="99.0" resizable="false" text="Игрок" />
+                <TableColumn fx:id="RecordsTableCol" prefWidth="99.0" resizable="false" text="Рекорд" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

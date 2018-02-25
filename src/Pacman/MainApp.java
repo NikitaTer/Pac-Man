@@ -18,18 +18,18 @@ public class MainApp extends Application {
         prStage.setTitle("Pacman");
         prStage.setResizable(false);
 
-        AnchorPane rootP = new AnchorPane();
+        AnchorPane rootPane = new AnchorPane();
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("View/MainMenu.fxml"));
-            rootP = (AnchorPane) loader.load();
+            loader.setLocation(MainApp.class.getResource("Controller/View/MainMenu.fxml"));
+            rootPane = (AnchorPane) loader.load();
         }
         catch(IOException ex) {
             ex.printStackTrace();
         }
 
-        Scene scene = new Scene(rootP);
-        scene.getStylesheets().add(getClass().getResource("View/My.css").toExternalForm());
+        Scene scene = new Scene(rootPane);
+        scene.getStylesheets().add(getClass().getResource("Controller/View/My.css").toExternalForm());
         prStage.setScene(scene);
 
         prStage.show();
