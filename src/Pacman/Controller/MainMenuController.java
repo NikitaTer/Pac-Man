@@ -1,12 +1,11 @@
 package Pacman.Controller;
 
-import Pacman.MainApp;
-
+import Pacman.SignInWindow;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.*;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -14,12 +13,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainMenu implements Initializable {
+public class MainMenuController implements Initializable {
 
+    private MainMenuController ths;
+    private Stage prStage;
+    @FXML private Label WelcomeLabel;
+    @FXML private Label NicknameLabel;
     @FXML private TableView RecordsTable;
     @FXML private Button RecordsButton;
     @FXML private VBox ButtonsVBox;
@@ -30,7 +32,10 @@ public class MainMenu implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        WelcomeLabel.setVisible(false);
+        NicknameLabel.setVisible(false);
         RecordsTable.setVisible(false);
+        ths = this;
         rootPane.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -52,7 +57,7 @@ public class MainMenu implements Initializable {
         CloseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                MainApp.close();
+                prStage.close();
             }
         });
 
@@ -60,32 +65,30 @@ public class MainMenu implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 if(SignButton.getText() == "Выйти") {
-
+                    WelcomeLabel.setVisible(false);
+                    NicknameLabel.setVisible(false);
+                    SignButton.setText("Войти");
                 }
                 else {
-                    SignInWindow();
+                    try {
+                        new SignInWindow(ths);
+                    }
+                    catch(Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         });
     }
 
-    private void SignInWindow() {
-        Stage scStage = new Stage();
-        scStage.setTitle("Вход");
+    public void setStage(Stage stage) {
+        prStage = stage;
+    }
 
-        AnchorPane rootP = new AnchorPane();
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("View/SignInWindow.fxml"));
-            rootP = (AnchorPane) loader.load();
-        }
-        catch(IOException ex) {
-            ex.printStackTrace();
-        }
-
-        Scene scene = new Scene(rootP);
-        scStage.setScene(scene);
-
-        scStage.show();
+    public void setNickname(String Nickname) {
+        NicknameLabel.setText(Nickname);
+        WelcomeLabel.setVisible(true);
+        NicknameLabel.setVisible(true);
+        SignButton.setText("Выйти");
     }
 }

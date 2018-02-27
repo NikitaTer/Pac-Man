@@ -1,5 +1,6 @@
 package Pacman;
 
+import Pacman.Controller.MainMenuController;
 import javafx.application.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,6 +24,8 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("Controller/View/MainMenu.fxml"));
             rootPane = (AnchorPane) loader.load();
+            MainMenuController controller = loader.getController();
+            controller.setStage(prStage);
         }
         catch(IOException ex) {
             ex.printStackTrace();
@@ -33,10 +36,6 @@ public class MainApp extends Application {
         prStage.setScene(scene);
 
         prStage.show();
-    }
-
-    public static void close() {
-        prStage.close();
     }
 
     public static void main(String[] argc) {
