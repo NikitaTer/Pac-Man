@@ -1,7 +1,6 @@
 package Pacman.Controller;
 
-import Pacman.Controller.MainMenuController;
-
+import Pacman.ControllersManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.*;
@@ -13,6 +12,7 @@ import java.util.ResourceBundle;
 
 public class SignInWindowController implements Initializable {
 
+    private ControllersManager CManager;
     private MainMenuController ForNick;
     private Stage prStage;
     @FXML private Button CloseButton;
@@ -33,7 +33,7 @@ public class SignInWindowController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 if(!EnterField.getText().isEmpty()) {
-                    ForNick.setNickname(EnterField.getText());
+                    CManager.setNickname(EnterField.getText());
                     prStage.close();
                 }
                 else {
@@ -47,7 +47,7 @@ public class SignInWindowController implements Initializable {
         prStage = stage;
     }
 
-    public void setForNick(MainMenuController cont) {
-        ForNick = cont;
+    public void setCManager(ControllersManager CManager) {
+        this.CManager = CManager;
     }
 }

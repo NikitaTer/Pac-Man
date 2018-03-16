@@ -1,5 +1,6 @@
 package Pacman.Controller;
 
+import Pacman.ControllersManager;
 import Pacman.SignInWindow;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,7 +19,7 @@ import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
 
-    private MainMenuController ths;
+    private ControllersManager CManager;
     private Stage prStage;
     @FXML private Label WelcomeLabel;
     @FXML private Label NicknameLabel;
@@ -35,7 +36,6 @@ public class MainMenuController implements Initializable {
         WelcomeLabel.setVisible(false);
         NicknameLabel.setVisible(false);
         RecordsTable.setVisible(false);
-        ths = this;
         rootPane.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -71,7 +71,7 @@ public class MainMenuController implements Initializable {
                 }
                 else {
                     try {
-                        new SignInWindow(ths);
+                        new SignInWindow(CManager);
                     }
                     catch(Exception ex) {
                         ex.printStackTrace();
@@ -85,10 +85,14 @@ public class MainMenuController implements Initializable {
         prStage = stage;
     }
 
+    public void setCManager(ControllersManager CManager) {
+        this.CManager = CManager;
+    }
+
     public void setNickname(String Nickname) {
-        NicknameLabel.setText(Nickname);
-        WelcomeLabel.setVisible(true);
-        NicknameLabel.setVisible(true);
         SignButton.setText("Выйти");
+        WelcomeLabel.setVisible(true);
+        NicknameLabel.setText(Nickname);
+        NicknameLabel.setVisible(true);
     }
 }

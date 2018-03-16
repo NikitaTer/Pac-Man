@@ -11,22 +11,20 @@ import java.io.IOException;
 
 public class SignInWindow {
 
-    private MainMenuController ForNick;
+    private ControllersManager CManager;
 
-    public SignInWindow(MainMenuController lab) throws Exception {
+    public SignInWindow(ControllersManager CManager) throws Exception {
         Stage prStage = new Stage();
         prStage.setTitle("Вход");
 
-        ForNick = lab;
+        this.CManager = CManager;
 
         AnchorPane rootP = new AnchorPane();
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Controller/View/SignInWindow.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("View/SignInWindow.fxml"));
             rootP = (AnchorPane) loader.load();
-            SignInWindowController controller = loader.getController();
-            controller.setStage(prStage);
-            controller.setForNick(ForNick);
+            CManager.addSignInWindowController(loader.getController(), prStage);
         }
         catch(IOException ex) {
             ex.printStackTrace();
