@@ -1,7 +1,5 @@
 package Pacman;
 
-import Pacman.Controller.MainMenuController;
-import Pacman.Controller.SignInWindowController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;

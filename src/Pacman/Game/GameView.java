@@ -1,4 +1,4 @@
-package Pacman.Model;
+package Pacman.Game;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
@@ -7,7 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
-public class Game extends Canvas implements Runnable {
+public class GameView extends Canvas implements Runnable {
 
     private boolean  isRunning = false;
     public static final int WIDTH = 700;
@@ -18,9 +18,9 @@ public class Game extends Canvas implements Runnable {
 
     private Point2D pos;
 
-    public Game() {
-        setWidth(Game.WIDTH);
-        setHeight(Game.HIGH);
+    public GameView() {
+        setWidth(GameView.WIDTH);
+        setHeight(GameView.HIGH);
 
         gc = this.getGraphicsContext2D();
         gc.setFill(Color.YELLOW);

@@ -1,9 +1,9 @@
 package Pacman;
 
-import Pacman.Controller.MainMenuController;
 import javafx.application.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -20,6 +20,7 @@ public class MainApp extends Application {
         this.prStage = prStage;
         prStage.setTitle("Pac-Man");
         prStage.setResizable(false);
+        prStage.getIcons().add(new Image(MainApp.class.getResourceAsStream("View/Icon_mini.png")));
 
         AnchorPane rootPane = new AnchorPane();
         CManager = new ControllersManager();
@@ -41,8 +42,8 @@ public class MainApp extends Application {
         prStage.show();
     }
 
-    public static void StartMenu(Stage st) {
-        st.setScene(scene);
+    public static void StartMenu(Stage prStage) {
+        prStage.setScene(scene);
     }
 
     public static void main(String[] argc) {

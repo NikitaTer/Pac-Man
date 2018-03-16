@@ -13,7 +13,6 @@ import java.util.ResourceBundle;
 public class SignInWindowController implements Initializable {
 
     private ControllersManager CManager;
-    private MainMenuController ForNick;
     private Stage prStage;
     @FXML private Button CloseButton;
     @FXML private Button OkButton;
