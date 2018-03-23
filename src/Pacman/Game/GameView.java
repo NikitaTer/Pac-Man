@@ -1,10 +1,10 @@
 package Pacman.Game;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 public class GameView extends Canvas implements Runnable {
@@ -15,6 +15,7 @@ public class GameView extends Canvas implements Runnable {
     public static final String TITLE = "Pac-Man";
     private GraphicsContext gc;
     private Thread thread;
+    private GameModel gameModel;
 
     private Point2D pos;
 
@@ -47,56 +48,77 @@ public class GameView extends Canvas implements Runnable {
         System.out.println("Stoped");
     }
 
-    private void tick() {
-
-    }
-
-    private void render() {
-        gc.fillRect(pos.getX(), pos.getY(), 40, 40);
-    }
+//    private void tick() {
+//
+//    }
+//
+//    private void render() {
+//    }
 
     @Override
     public void run() {
-        long LastTime = System.nanoTime();
-        long Now;
-        double TargetTicks = 60;
-        double Delta = 0;
-        double ns = 1000000000/TargetTicks;
+        drawing(gameModel.getGameMap());
+//        long LastTime = System.nanoTime();
+//        long Now;
+//        double TargetTicks = 60;
+//        double Delta = 0;
+//        double ns = 1000000000/TargetTicks;
+//
+//        while(isRunning) {
+//            Now = System.nanoTime();
+//            Delta+=(Now - LastTime) / ns;
+//            LastTime = Now;
+//            while(Delta >=1) {
+//                tick();
+//                render();
+//                Delta--;
+//            }
+//        }
+    }
 
-        addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                switch (event.getCode()) {
-                    case A:
-                        pos.add(pos.getX() - 1, pos.getY());
+    public void drawing(int[][] Map) {
+        int i, j, x = 0, y = 0;
+
+        gc.clearRect(0,0, WIDTH, HIGH);
+
+        for(i = 0; i < 17; i++) {
+            for (j = 0; j < 58; j++) {
+                switch (Map[i][j]) {
+                    case 0:
+                        gc.setFill(Color.LIGHTGRAY);
+                        gc.fillRect(x, y, 12, 12);
                         break;
-                    case D:
-                        pos.add(pos.getX() + 1, pos.getY());
-                        System.out.println("worked");
+                    case 1:
+                        gc.setFill(Color.BLACK);
+                        gc.fillRect(x, y, 12, 12);
                         break;
-                    case W:
-                        pos.add(pos.getX(), pos.getY() + 1);
+                    case 2:
+                        gc.setFill(Color.YELLOW);
+                        Image image = new Image(GameView.class.getResourceAsStream("Sprites.png"));
+                        WritableImage writableImage = new WritableImage(image.getPixelReader(), 4, 1, 12, 12);
+                        gc.drawImage(writableImage, x,y,12,12);
                         break;
-                    case S:
-                        pos.add(pos.getX(), pos.getY() - 1);
+                    case 4:
+                        gc.setFill(Color.RED);
+                        gc.fillRect(x, y, 12, 12);
+                        break;
+                    case 5:
+                        gc.setFill(Color.BLUE);
+                        gc.fillRect(x, y, 12, 12);
                         break;
                     default:
-                        System.out.println("Something wrong\n");
+                        gc.setFill(Color.WHITE);
+                        gc.fillRect(x, y, 12, 12);
                         break;
                 }
+                x += 12;
             }
-        });
-
-
-        while(isRunning) {
-            Now = System.nanoTime();
-            Delta+=(Now - LastTime) / ns;
-            LastTime = Now;
-            while(Delta >=1) {
-                tick();
-                render();
-                Delta--;
-            }
+            x = 0;
+            y+=12;
         }
+    }
+
+    public void setGameModel(GameModel gameModel) {
+        this.gameModel = gameModel;
     }
 }

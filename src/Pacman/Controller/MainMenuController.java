@@ -1,16 +1,21 @@
 package Pacman.Controller;
 
+import Pacman.Game.*;
 import Pacman.ControllersManager;
+import Pacman.Game.GameModel;
+import Pacman.Game.GameView;
 import Pacman.SignInWindow;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.*;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -29,6 +34,7 @@ public class MainMenuController implements Initializable {
     @FXML private Button CloseButton;
     @FXML private AnchorPane rootPane;
     @FXML private Button SignButton;
+    @FXML private Button StartButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -77,6 +83,29 @@ public class MainMenuController implements Initializable {
                         ex.printStackTrace();
                     }
                 }
+            }
+        });
+
+        StartButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                prStage.setWidth(710);
+                prStage.setHeight(500);
+
+                Pane root = new Pane();
+                Scene scene = new Scene(root);
+                prStage.setScene(scene);
+
+                GameView gameView = new GameView();
+                GameModel gameModel = new GameModel(58, 17, root);
+                gameModel.setGameView(gameView);
+                gameView.setGameModel(gameModel);
+
+                root.getChildren().add(gameView);
+
+                scene.addEventHandler(KeyEvent.KEY_RELEASED, gameModel);
+
+                gameView.start();
             }
         });
     }
