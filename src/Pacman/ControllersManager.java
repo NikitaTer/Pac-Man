@@ -8,9 +8,10 @@ public class ControllersManager {
 
     private MainMenuController MMController;
     private SignInWindowController SIWController;
+    private MainApp mainApp;
 
-    ControllersManager() {
-
+    ControllersManager(MainApp mainApp) {
+        this.mainApp = mainApp;
     }
 
     public void addMainMenuController(MainMenuController MMController, Stage stage) {
@@ -27,5 +28,9 @@ public class ControllersManager {
 
     public void setNickname(String Nickname) {
         MMController.setNickname(Nickname);
+    }
+
+    public void StartGame() {
+        mainApp.StartGame();
     }
 }

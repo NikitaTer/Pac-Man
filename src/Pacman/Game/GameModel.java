@@ -1,25 +1,26 @@
 package Pacman.Game;
 
 import Pacman.Game.GameObjects.Player;
+import Pacman.Game.GameObjects.Space;
+import Pacman.MainApp;
 import javafx.event.EventHandler;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
 public class GameModel implements EventHandler<KeyEvent> {
 
-    private int[][] gameMap = {
+    private volatile int[][] gameMap = {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1},
             {1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1},
             {1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 5, 5, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1},
-            {1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 4, 4, 4, 4, 4, 4, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1},
-            {1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 4, 4, 4, 4, 4, 4, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1},
-            {1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 4, 4, 4, 4, 4, 4, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1},
-            {1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1},
-            {1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1},
+            {1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 4, 4, 4, 4, 4, 4, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1},
+            {1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 4, 4, 4, 4, 4, 4, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1},
+            {1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 4, 4, 4, 4, 4, 4, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1},
+            {1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1},
+            {1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1},
             {1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1},
@@ -27,80 +28,121 @@ public class GameModel implements EventHandler<KeyEvent> {
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
+    private Space[][] spaces;
     private static int WIDTH;
     private static int HEIGHT;
     private Pane root;
-    private Player pac;
     private GameView gameView;
+    private MainApp mainApp;
 
-    public GameModel(int WIDTH, int HEIGHT, Pane root) {
+    private Player pac;
+    private int points = 334;
+
+    public GameModel(int WIDTH, int HEIGHT, Pane root, MainApp mainApp) {
         this.root = root;
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
+        this.mainApp = mainApp;
+
+        posScan();
 
         pac = new Player(26,15);
+        pac.start();
     }
 
     int[][] getGameMap() {
         return gameMap;
     }
 
+    Space[][] getSpaces() {
+        return spaces;
+    }
+
     @Override
     public void handle(KeyEvent event) {
-        boolean flag = false;
-            if(event.getCode() == KeyCode.UP) {
+        switch (event.getCode()) {
+            case UP:
                 if (gameMap[pac.getPosY() - 1][pac.getPosX()] == 0) {
                     up();
-                    flag = true;
-                    System.out.println("UP");
+                    gameView.drawing(gameMap);
                 }
-            }
-            else if (event.getCode() == KeyCode.DOWN) {
+                break;
+
+            case DOWN:
                 if (gameMap[pac.getPosY() + 1][pac.getPosX()] == 0) {
                     down();
-                    flag = true;
-                    System.out.println("DOWN");
+                    gameView.drawing(gameMap);
                 }
-            }
-            else if (event.getCode() == KeyCode.LEFT) {
+                break;
+
+            case LEFT:
                 if (gameMap[pac.getPosY()][pac.getPosX() - 1] == 0) {
                     left();
-                    flag = true;
-                    System.out.println("LEFT");
+                    gameView.drawing(gameMap);
                 }
-            }
-            else if (event.getCode() == KeyCode.RIGHT) {
+                break;
+
+            case RIGHT:
                 if (gameMap[pac.getPosY()][pac.getPosX() + 1] == 0) {
                     right();
-                    flag = true;
-                    System.out.println("RIGHT");
+                    gameView.drawing(gameMap);
                 }
-            }
-        if(flag)
-            gameView.drawing(gameMap);
+                break;
+
+            case ESCAPE:
+                gameView.stop();
+                pac.stop();
+                mainApp.StartMenu();
+
+            default:
+                break;
+        }
+        if (points == 0)
+            System.out.println("You Win!!!");
+    }
+
+    private void posScan() {
+        spaces = new Space[17][58];
+
+        for(int i = 0; i < 17; i++)
+            for(int j = 0; j < 58; j++)
+                if (gameMap[i][j] == 0 || gameMap[i][j] == 2) {
+                    spaces[i][j] = new Space();
+                }
     }
 
     private void up() {
-        gameMap[pac.up()][pac.getPosX()] = 0;
+        gameMap[pac.getPosY()][pac.getPosX()] = 0;
+        check(pac.getPosX(), pac.up());
         gameMap[pac.getPosY()][pac.getPosX()] = 2;
     }
 
     private void down() {
-        gameMap[pac.down()][pac.getPosX()] = 0;
+        gameMap[pac.getPosY()][pac.getPosX()] = 0;
+        check(pac.getPosX(), pac.down());
         gameMap[pac.getPosY()][pac.getPosX()] = 2;
     }
 
     private void left() {
-        gameMap[pac.getPosY()][pac.left()] = 0;
+        gameMap[pac.getPosY()][pac.getPosX()] = 0;
+        check(pac.left(), pac.getPosY());
         gameMap[pac.getPosY()][pac.getPosX()] = 2;
     }
 
     private void right() {
-        gameMap[pac.getPosY()][pac.right()] = 0;
+        gameMap[pac.getPosY()][pac.getPosX()] = 0;
+        check(pac.right(), pac.getPosY());
         gameMap[pac.getPosY()][pac.getPosX()] = 2;
     }
 
     public void setGameView(GameView gameView) {
         this.gameView = gameView;
+    }
+
+    private void check(int posX, int posY) {
+        if(spaces[posY][posX].isEmpty())
+            return;
+        spaces[posY][posX].Empty();
+        points--;
     }
 }

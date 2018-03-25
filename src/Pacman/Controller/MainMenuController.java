@@ -62,9 +62,7 @@ public class MainMenuController implements Initializable {
 
         CloseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-                prStage.close();
-            }
+            public void handle(ActionEvent event) { prStage.close(); }
         });
 
         SignButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -89,23 +87,7 @@ public class MainMenuController implements Initializable {
         StartButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                prStage.setWidth(710);
-                prStage.setHeight(500);
-
-                Pane root = new Pane();
-                Scene scene = new Scene(root);
-                prStage.setScene(scene);
-
-                GameView gameView = new GameView();
-                GameModel gameModel = new GameModel(58, 17, root);
-                gameModel.setGameView(gameView);
-                gameView.setGameModel(gameModel);
-
-                root.getChildren().add(gameView);
-
-                scene.addEventHandler(KeyEvent.KEY_RELEASED, gameModel);
-
-                gameView.start();
+                CManager.StartGame();
             }
         });
     }
