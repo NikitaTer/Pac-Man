@@ -71,6 +71,7 @@ public class MainApp extends Application {
         rootGame.getChildren().add(gameView);
 
         gameScene.addEventHandler(KeyEvent.KEY_PRESSED, gameModel);
+        gameScene.addEventHandler(KeyEvent.KEY_PRESSED, gameModel.getPac());
 
         gameView.start();
     }
