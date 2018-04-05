@@ -1,6 +1,5 @@
 package Pacman.Game;
 
-import Pacman.Game.GameObjects.Player;
 import Pacman.Game.GameObjects.Space;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -19,6 +18,8 @@ public class GameView extends Canvas implements Runnable {
     private int[][] gameMap;
 
     private Image[] pacmans;
+    private Image[][] ghosts;
+    private Image[] ghosts_weak;
     private Image[] spaces;
     private Image[] walls;
 
@@ -36,6 +37,7 @@ public class GameView extends Canvas implements Runnable {
         isRunning = true;
         thread = new Thread(this);
         thread.start();
+        gameModel.getPac().start();
     }
 
     public synchronized void stop() {
@@ -102,10 +104,12 @@ public class GameView extends Canvas implements Runnable {
                             gc.drawImage(spaces[0], x, y,14,14);
                         break;
                     }
+
                     case 1: {
                         gc.drawImage(wallSwitch(i, j), x,y,14,14);
                         break;
                     }
+
                     case 2: {
                         if (gameModel.getPac().isUp)
                             gc.drawImage(pacmans[2], x,y,14,14);
@@ -117,13 +121,20 @@ public class GameView extends Canvas implements Runnable {
                             gc.drawImage(pacmans[0], x,y,14,14);
                         break;
                     }
+
                     case 4: {
                         gc.drawImage(spaces[0], x, y,14,14);
                         break;
                     }
+
                     case 5: {
                         gc.drawImage(spaces[0], x, y,14,14);
                         break;
+                    }
+
+                    case 6: {
+                        if (ghosts[0].)
+                        for (i = 0, j = 0; ghosts)
                     }
                     default:
                         gc.setFill(Color.WHITE);
@@ -191,16 +202,25 @@ public class GameView extends Canvas implements Runnable {
      *
      *@author NikiTer */
     private void image_init() {
-        pacmans = new Image[4];
+        pacmans = new Image[3];
+        ghosts = new Image[4][8];
+        ghosts_weak = new Image[4];
         spaces = new Image[4];
         walls = new Image[13];
-        int x = 0, y = 0, i = 0;
+        int x = 0, y = 0, i = 0, j = 0;
 
         Image imageWalls = new Image(GameView.class.getResourceAsStream("Textures/Walls.bmp"));
         Image imageSprites = new Image(GameView.class.getResourceAsStream("Textures/Sprites.bmp"));
 
         for (x = 18, i = 0, y = 1; y <=46; y+=15, i++)
             pacmans[i] = new WritableImage(imageSprites.getPixelReader(), x,y, 14,14);
+
+        for (x = 3, y = 65, i = 0; i < 4; i++, x = 3, y += 16)
+            for (j = 0; j < 8; j++, x +=16)
+                ghosts[i][j] = new WritableImage(imageSprites.getPixelReader(), x, y,14,14);
+
+        for (i = 0, x = 131, y = 65; i < 4; i++, x += 16)
+            ghosts_weak[i] = new WritableImage(imageSprites.getPixelReader(), x, y, 14,14);
 
         /*
          * 0 - Пустое пространство

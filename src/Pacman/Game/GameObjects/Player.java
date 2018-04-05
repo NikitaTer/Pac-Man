@@ -19,10 +19,14 @@ public class Player implements Runnable, EventHandler<KeyEvent> {
 
     private Thread thread;
 
-    public boolean isUp = false;
-    public boolean isDown = false;
-    public boolean isLeft = false;
-    public boolean isRight = false;
+    public volatile boolean isUp = false;
+    public volatile boolean isDown = false;
+    public volatile boolean isLeft = false;
+    public volatile boolean isRight = false;
+    public volatile boolean isTurnUp = false;
+    public volatile boolean isTurnDown = false;
+    public volatile boolean isTurnLeft = false;
+    public volatile boolean isTurnRight = false;
 
     public Player(int posX, int posY, int[][] gameMap, GameModel gameModel) {
         this.posX = posX;
@@ -40,7 +44,11 @@ public class Player implements Runnable, EventHandler<KeyEvent> {
 
     public synchronized void stop() {
         if (!isRunning) return;
+
+        wayFalse();
+        turnFalse();
         isRunning = false;
+
         try {
             thread.join();
         }
@@ -56,103 +64,198 @@ public class Player implements Runnable, EventHandler<KeyEvent> {
     @Override
     public void run() {
 
+        while (isRunning) {
+            try {
+                while (isUp) {
+                    if (up())
+                        break;
+                    gameView.drawing(gameMap);
+                    Thread.sleep(150);
+                }
+
+                while (isDown) {
+                    if (down())
+                        break;
+                    gameView.drawing(gameMap);
+                    Thread.sleep(150);
+                }
+
+                while (isLeft) {
+                    if (left())
+                        break;
+                    gameView.drawing(gameMap);
+                    Thread.sleep(150);
+                }
+
+                while (isRight) {
+                    if (right())
+                        break;
+                    gameView.drawing(gameMap);
+                    Thread.sleep(150);
+                }
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void handle(KeyEvent event) {
 
-        boolean flag = false;
-
         switch (event.getCode()) {
             case UP:
+                turnFalse();
                 if (gameMap[posY - 1][posX] == 0) {
-                    up();
-                    flag = true;
+                    wayFalse();
+                    if (!isUp) isUp = true;
                 }
+                else
+                    if (!isTurnUp) isTurnUp = true;
                 break;
 
             case DOWN:
+                turnFalse();
                 if (gameMap[posY + 1][posX] == 0) {
-                    down();
-                    flag = true;
+                    wayFalse();
+                    if (!isDown) isDown = true;
                 }
+                else
+                    if (!isTurnDown) isTurnDown = true;
                 break;
 
             case LEFT:
+                turnFalse();
                 if (gameMap[posY][posX - 1] == 0) {
-                    left();
-                    flag = true;
+                    wayFalse();
+                    if (!isLeft) isLeft = true;
                 }
+                else
+                    if (!isTurnLeft) isTurnLeft = true;
                 break;
 
             case RIGHT:
+                turnFalse();
                 if (gameMap[posY][posX + 1] == 0) {
-                    right();
-                    flag = true;
+                    wayFalse();
+                    if (!isRight) isRight = true;
                 }
+                else
+                    if (!isTurnRight) isTurnRight = true;
                 break;
 
             default:
                 break;
         }
-
-        if (flag) {
-            gameView.drawing(gameMap);
-            /*Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(300);
-                    }
-                    catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            });*/
-        }
     }
 
-    private void up() {
-        if (isDown) isDown = false;
-        if (isLeft) isLeft = false;
-        if (isRight) isRight = false;
-        if (!isUp) isUp = true;
+    private boolean up() {
+        if (isTurnLeft && gameMap[posY][posX - 1] == 0) {
+            isUp = false;
+            turnFalse();
+            isLeft = true;
+            return true;
+        }
+        if (isTurnRight && gameMap[posY][posX + 1] == 0) {
+            isUp = false;
+            turnFalse();
+            isRight = true;
+            return true;
+        }
+
+        if (gameMap[posY - 1][posX] != 0) {
+            isUp = false;
+            return false;
+        }
 
         gameMap[posY][posX] = 0;
         gameMap[--posY][posX] = 2;
         gameModel.check(posX, posY);
+        return false;
     }
 
-    private void down() {
-        if (isUp) isUp = false;
-        if (isLeft) isLeft = false;
-        if (isRight) isRight = false;
-        if (!isDown) isDown = true;
+    private boolean down() {
+        if (isTurnLeft && gameMap[posY][posX - 1] == 0) {
+            isDown = false;
+            turnFalse();
+            isLeft = true;
+            return true;
+        }
+        if (isTurnRight && gameMap[posY][posX + 1] == 0) {
+            isDown = false;
+            turnFalse();
+            isRight = true;
+            return true;
+        }
 
+        if (gameMap[posY + 1][posX] != 0) {
+            isDown = false;
+            return false;
+        }
         gameMap[posY][posX] = 0;
         gameMap[++posY][posX] = 2;
         gameModel.check(posX, posY);
+        return false;
     }
 
-    private void left() {
-        if (isUp) isUp = false;
-        if (isDown) isDown = false;
-        if (isRight) isRight = false;
-        if (!isLeft) isLeft = true;
+    private boolean left() {
+        if (isTurnUp && gameMap[posY - 1][posX] == 0) {
+            isLeft = false;
+            turnFalse();
+            isUp = true;
+            return true;
+        }
+        if (isTurnDown && gameMap[posY + 1][posX] == 0) {
+            isLeft = false;
+            turnFalse();
+            isDown = true;
+            return true;
+        }
 
+        if (gameMap[posY][posX - 1] != 0) {
+            isLeft = false;
+            return false;
+        }
         gameMap[posY][posX] = 0;
         gameMap[posY][--posX] = 2;
         gameModel.check(posX, posY);
+        return  false;
     }
 
-    private void right() {
-        if (isUp) isUp = false;
-        if (isDown) isDown = false;
-        if (isLeft) isLeft = false;
-        if (!isRight) isRight = true;
+    private boolean right() {
+        if (isTurnUp && gameMap[posY - 1][posX] == 0) {
+            isRight = false;
+            turnFalse();
+            isUp = true;
+            return true;
+        }
+        if (isTurnDown && gameMap[posY + 1][posX] == 0) {
+            isRight = false;
+            turnFalse();
+            isDown = true;
+            return true;
+        }
 
+        if (gameMap[posY][posX + 1] != 0) {
+            isRight = false;
+            return false;
+        }
         gameMap[posY][posX] = 0;
         gameMap[posY][++posX] = 2;
         gameModel.check(posX, posY);
+        return false;
+    }
+
+    private void turnFalse() {
+        if (isTurnUp) isTurnUp = false;
+        if (isTurnDown) isTurnDown = false;
+        if (isTurnLeft) isTurnLeft = false;
+        if (isTurnRight) isTurnRight = false;
+    }
+
+    private void wayFalse() {
+        if (isUp) isUp = false;
+        if (isDown) isDown = false;
+        if (isLeft) isLeft = false;
+        if (isRight) isRight = false;
     }
 }

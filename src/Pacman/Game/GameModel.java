@@ -1,5 +1,6 @@
 package Pacman.Game;
 
+import Pacman.Game.GameObjects.Ghost;
 import Pacman.Game.GameObjects.Player;
 import Pacman.Game.GameObjects.Space;
 import Pacman.MainApp;
@@ -17,9 +18,9 @@ public class GameModel implements EventHandler<KeyEvent> {
             {1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1},
             {1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 5, 5, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1},
-            {1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 4, 4, 4, 4, 4, 4, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1},
-            {1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 4, 4, 4, 4, 4, 4, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1},
-            {1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 4, 4, 4, 4, 4, 4, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1},
+            {1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 4, 0, 0, 4, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1},
+            {1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 4, 4, 0, 0, 4, 4, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1},
+            {1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 4, 0, 0, 4, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1},
             {1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1},
             {1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1},
             {1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1},
@@ -37,6 +38,7 @@ public class GameModel implements EventHandler<KeyEvent> {
     private MainApp mainApp;
 
     private Player pac;
+    private Ghost[] ghosts;
     private int points = 333;
 
     public GameModel(int WIDTH, int HEIGHT, Pane root, MainApp mainApp) {
@@ -52,12 +54,44 @@ public class GameModel implements EventHandler<KeyEvent> {
         boolean pacFlag = false;
 
         spaces = new Space[17][58];
+        ghosts = new Ghost[8];
+        int g_i = 0, ii = 0;
 
         for(int i = 0; i < 17; i++)
             for(int j = 0; j < 58; j++) {
-                if (gameMap[i][j] == 0) {
+                switch (gameMap[i][j]) {
+                    case 0: {
+                        if(i == 8 && j == 12)
+                            spaces[i][j] = new Space(false, true, false);
+                        else if (gameMap[i][j - 1] != 4 && gameMap[i][j + 1] != 4)
+                            spaces[i][j] = new Space(false, false, false);
+                        else
+                            spaces[i][j] = new Space();
+                        break;
+                    }
+
+                    case 2: {
+                        if (pacFlag)
+                            break;
+                        spaces[i][j] = new Space();
+                        spaces[i][j].Empty();
+                        pac = new Player(j, i, gameMap, this);
+                        pacFlag = true;
+                        break;
+                    }
+
+                    case 4: {
+                        ghosts[ii] = new Ghost(j, i, this);
+                        ii++;
+                        break;
+                    }
+                }
+            }
+            /*if (gameMap[i][j] == 0) {
                     if(i == 8 && j == 12)
                         spaces[i][j] = new Space(false, true, false);
+                    else if (gameMap[i][j - 1] != 4 && gameMap[i][j + 1] != 4)
+                        spaces[i][j] = new Space(false, false, false);
                     else
                         spaces[i][j] = new Space();
                 } else if (gameMap[i][j] == 2 && !pacFlag) {
@@ -65,10 +99,7 @@ public class GameModel implements EventHandler<KeyEvent> {
                     spaces[i][j].Empty();
                     pac = new Player(26,15, gameMap, this);
                     pacFlag = true;
-                }
-            }
-            if (pacFlag)
-                pac.start();
+                }*/
     }
 
     public void setGameView(GameView gameView) {
@@ -92,8 +123,8 @@ public class GameModel implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
         if (event.getCode() == KeyCode.ESCAPE) {
-            gameView.stop();
             pac.stop();
+            gameView.stop();
             mainApp.StartMenu();
         }
     }
