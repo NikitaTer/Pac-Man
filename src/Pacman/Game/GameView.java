@@ -37,7 +37,6 @@ public class GameView extends Canvas implements Runnable {
         isRunning = true;
         thread = new Thread(this);
         thread.start();
-        gameModel.getPac().start();
     }
 
     public synchronized void stop() {
@@ -88,8 +87,9 @@ public class GameView extends Canvas implements Runnable {
                  * 0 - пространство, по которому можно ходить
                  * 1 - стена
                  * 2 - игрок (Пакмен)
-                 * 4 - комната призраков
-                 * 5 - выход из комнаты призраков*/
+                 * 4 - респавн призраков
+                 * 5 - выход из комнаты призраков
+                 * 6 - прзрак*/
 
                 switch (gameMap[i][j]) {
                     case 0: {
@@ -133,8 +133,10 @@ public class GameView extends Canvas implements Runnable {
                     }
 
                     case 6: {
-                        if (ghosts[0].)
-                        for (i = 0, j = 0; ghosts)
+                        for (i = 0; gameModel.getGhosts()[i].getPosX() != j && gameModel.getGhosts()[i].getPosY() != i; i++);
+                        if (gameModel.getGhosts()[i].isWeak) {
+                            gc.drawImage(ghosts_weak[0],x,y,14,14);
+                        }
                     }
                     default:
                         gc.setFill(Color.WHITE);
@@ -202,7 +204,7 @@ public class GameView extends Canvas implements Runnable {
      *
      *@author NikiTer */
     private void image_init() {
-        pacmans = new Image[3];
+        pacmans = new Image[4];
         ghosts = new Image[4][8];
         ghosts_weak = new Image[4];
         spaces = new Image[4];
@@ -212,7 +214,7 @@ public class GameView extends Canvas implements Runnable {
         Image imageWalls = new Image(GameView.class.getResourceAsStream("Textures/Walls.bmp"));
         Image imageSprites = new Image(GameView.class.getResourceAsStream("Textures/Sprites.bmp"));
 
-        for (x = 18, i = 0, y = 1; y <=46; y+=15, i++)
+        for (x = 18, i = 0, y = 1; y <= 46; y += 15, i++)
             pacmans[i] = new WritableImage(imageSprites.getPixelReader(), x,y, 14,14);
 
         for (x = 3, y = 65, i = 0; i < 4; i++, x = 3, y += 16)

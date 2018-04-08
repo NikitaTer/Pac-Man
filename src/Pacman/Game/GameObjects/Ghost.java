@@ -3,6 +3,8 @@ package Pacman.Game.GameObjects;
 import Pacman.Game.GameModel;
 import Pacman.Game.GameView;
 
+import java.io.InterruptedIOException;
+
 public class Ghost implements Runnable {
 
     private boolean isRunning = false;
@@ -23,6 +25,7 @@ public class Ghost implements Runnable {
     public volatile boolean isLeft = false;
     public volatile boolean isRight = false;
     public volatile boolean isWeak = false;
+    private volatile boolean onResp = true;
 
     public Ghost(int posX, int posY, GameModel gameModel) {
         this.posX = posX;
@@ -59,25 +62,97 @@ public class Ghost implements Runnable {
     public void run() {
         while (isRunning) {
             try {
+
+                if (onResp) {
+                    Thread.sleep(7000);
+                    gameMap[posY][posX] = 6;
+                    Thread.sleep(200);
+                    script();
+                }
+
                 while (isUp) {
+                    if (gameMap[posY][posX - 1] != 1 && gameMap[posY][posX - 1] != 5 && gameMap[posY][posX + 1] != 1 && gameMap[posY][posX + 1] != 5 && gameMap[posY - 1][posX] != 1 && gameMap[posY - 1][posX] != 5) {
+                        choose(1, 4);
+                        break;
+                    }
+                    if ((gameMap[posY][posX - 1] != 1 && gameMap[posY][posX - 1] != 5 && gameMap[posY][posX + 1] != 1 && gameMap[posY][posX + 1] != 5)
+                            || (gameMap[posY][posX - 1] != 1 && gameMap[posY][posX - 1] != 5 && gameMap[posY - 1][posX] != 1 && gameMap[posY - 1][posX] != 5)
+                            || (gameMap[posY][posX + 1] != 1 && gameMap[posY][posX + 1] != 5 && gameMap[posY - 1][posX] != 1 && gameMap[posY - 1][posX] != 5)) {
+                        choose(1, 3);
+                        break;
+                    }
+                    if ((gameMap[posY][posX - 1] != 1 && gameMap[posY][posX - 1] != 5)
+                            || (gameMap[posY][posX + 1] != 1 && gameMap[posY][posX + 1] != 5)
+                            || (gameMap[posY - 1][posX] != 1 && gameMap[posY - 1][posX] != 5)) {
+                        choose(1, 2);
+                        break;
+                    }
                     up();
                     gameView.drawing(gameMap);
                     Thread.sleep(200);
                 }
 
                 while (isDown) {
+                    if (gameMap[posY][posX - 1] != 1 && gameMap[posY][posX - 1] != 5 && gameMap[posY][posX + 1] != 1 && gameMap[posY][posX + 1] != 5 && gameMap[posY + 1][posX] != 1 && gameMap[posY + 1][posX] != 5) {
+                        choose(1, 4);
+                        break;
+                    }
+                    if ((gameMap[posY][posX - 1] != 1 && gameMap[posY][posX - 1] != 5 && gameMap[posY][posX + 1] != 1 && gameMap[posY][posX + 1] != 5)
+                            || (gameMap[posY][posX - 1] != 1 && gameMap[posY][posX - 1] != 5 && gameMap[posY + 1][posX] != 1 && gameMap[posY + 1][posX] != 5)
+                            || (gameMap[posY][posX + 1] != 1 && gameMap[posY][posX + 1] != 5 && gameMap[posY + 1][posX] != 1 && gameMap[posY + 1][posX] != 5)) {
+                        choose(1, 3);
+                        break;
+                    }
+                    if ((gameMap[posY][posX - 1] != 1 && gameMap[posY][posX - 1] != 5)
+                            || (gameMap[posY][posX + 1] != 1 && gameMap[posY][posX + 1] != 5)
+                            || (gameMap[posY + 1][posX] != 1 && gameMap[posY + 1][posX] != 5)) {
+                        choose(1, 2);
+                        break;
+                    }
                     down();
                     gameView.drawing(gameMap);
                     Thread.sleep(200);
                 }
 
                 while (isLeft) {
+                    if (gameMap[posY][posX - 1] != 1 && gameMap[posY][posX - 1] != 5 && gameMap[posY + 1][posX] != 1 && gameMap[posY + 1][posX] != 5 && gameMap[posY - 1][posX] != 1 && gameMap[posY - 1][posX] != 5) {
+                        choose(1, 4);
+                        break;
+                    }
+                    if ((gameMap[posY - 1][posX] != 1 && gameMap[posY - 1][posX] != 5 && gameMap[posY + 1][posX] != 1 && gameMap[posY + 1][posX] != 5)
+                            || (gameMap[posY][posX - 1] != 1 && gameMap[posY][posX - 1] != 5 && gameMap[posY - 1][posX] != 1 && gameMap[posY - 1][posX] != 5)
+                            || (gameMap[posY][posX - 1] != 1 && gameMap[posY][posX - 1] != 5 && gameMap[posY + 1][posX] != 1 && gameMap[posY + 1][posX] != 5)) {
+                        choose(1, 3);
+                        break;
+                    }
+                    if ((gameMap[posY][posX - 1] != 1 && gameMap[posY][posX - 1] != 5)
+                            || (gameMap[posY + 1][posX] != 1 && gameMap[posY + 1][posX] != 5)
+                            || (gameMap[posY - 1][posX] != 1 && gameMap[posY - 1][posX] != 5)) {
+                        choose(1, 2);
+                        break;
+                    }
                     left();
                     gameView.drawing(gameMap);
                     Thread.sleep(200);
                 }
 
                 while (isRight) {
+                    if (gameMap[posY][posX + 1] != 1 && gameMap[posY][posX + 1] != 5 && gameMap[posY + 1][posX] != 1 && gameMap[posY + 1][posX] != 5 && gameMap[posY - 1][posX] != 1 && gameMap[posY - 1][posX] != 5) {
+                        choose(1, 4);
+                        break;
+                    }
+                    if ((gameMap[posY - 1][posX] != 1 && gameMap[posY - 1][posX] != 5 && gameMap[posY + 1][posX] != 1 && gameMap[posY + 1][posX] != 5)
+                            || (gameMap[posY][posX + 1] != 1 && gameMap[posY][posX + 1] != 5 && gameMap[posY - 1][posX] != 1 && gameMap[posY - 1][posX] != 5)
+                            || (gameMap[posY][posX + 1] != 1 && gameMap[posY][posX + 1] != 5 && gameMap[posY + 1][posX] != 1 && gameMap[posY + 1][posX] != 5)) {
+                        choose(1, 3);
+                        break;
+                    }
+                    if ((gameMap[posY][posX + 1] != 1 && gameMap[posY][posX + 1] != 5)
+                            || (gameMap[posY + 1][posX] != 1 && gameMap[posY + 1][posX] != 5)
+                            || (gameMap[posY - 1][posX] != 1 && gameMap[posY - 1][posX] != 5)) {
+                        choose(1, 2);
+                        break;
+                    }
                     right();
                     gameView.drawing(gameMap);
                     Thread.sleep(200);
@@ -466,7 +541,81 @@ public class Ghost implements Runnable {
                 Thread.sleep(200);
             }
             gameMap[posY + 1][posX] = 5;
+            onResp = false;
+            return;
         }
+
+        if (gameMap[posY][posX + 2] == 1) {
+            gameMap[posY][posY] = 4;
+            gameMap[posY][--posX] = 6;
+            gameView.drawing(gameMap);
+            Thread.sleep(200);
+            while (gameMap[posY + 1][posX] != 1) {
+                gameMap[posY][posX] = 0;
+                gameMap[--posY][posX] = 6;
+                gameView.drawing(gameMap);
+                Thread.sleep(200);
+            }
+            gameMap[posY + 1][posX] = 5;
+            onResp = false;
+            return;
+        }
+
+        if (gameMap[posY][posX - 1] == 1) {
+            gameMap[posY][posY] = 4;
+            gameMap[posY][++posX] = 6;
+            gameView.drawing(gameMap);
+            Thread.sleep(200);
+            gameMap[posY][posY] = 4;
+            gameMap[posY][++posX] = 6;
+            gameView.drawing(gameMap);
+            Thread.sleep(200);
+            while (gameMap[posY + 1][posX] != 1) {
+                gameMap[posY][posX] = 0;
+                gameMap[--posY][posX] = 6;
+                gameView.drawing(gameMap);
+                Thread.sleep(200);
+            }
+            gameMap[posY + 1][posX] = 5;
+            onResp = false;
+            return;
+        }
+
+        if (gameMap[posY][posX + 1] == 1) {
+            gameMap[posY][posY] = 4;
+            gameMap[posY][--posX] = 6;
+            gameView.drawing(gameMap);
+            Thread.sleep(200);
+            gameMap[posY][posY] = 4;
+            gameMap[posY][--posX] = 6;
+            gameView.drawing(gameMap);
+            Thread.sleep(200);
+            while (gameMap[posY + 1][posX] != 1) {
+                gameMap[posY][posX] = 0;
+                gameMap[--posY][posX] = 6;
+                gameView.drawing(gameMap);
+                Thread.sleep(200);
+            }
+            gameMap[posY + 1][posX] = 5;
+            onResp = false;
+            return;
+        }
+    }
+
+    public void kill() throws InterruptedException {
+        wayOff();
+        gameMap[posY][posX] = 2;
+        posX = resp_posX;
+        posY = resp_posY;
+        if (isWeak) isWeak = false;
+        onResp = true;
+    }
+
+    private void wayOff() {
+        if (isUp) isUp =  false;
+        if (isDown) isDown = false;
+        if (isLeft) isLeft = false;
+        if (isRight) isRight = false;
     }
 
     public int getPosX() {

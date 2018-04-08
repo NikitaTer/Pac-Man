@@ -74,6 +74,7 @@ public class MainApp extends Application {
         gameScene.addEventHandler(KeyEvent.KEY_PRESSED, gameModel.getPac());
 
         gameView.start();
+        gameModel.start();
     }
 
     public static void main(String[] argc) {

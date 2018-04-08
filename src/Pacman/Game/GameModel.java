@@ -55,7 +55,7 @@ public class GameModel implements EventHandler<KeyEvent> {
 
         spaces = new Space[17][58];
         ghosts = new Ghost[8];
-        int g_i = 0, ii = 0;
+        int ii = 0;
 
         for(int i = 0; i < 17; i++)
             for(int j = 0; j < 58; j++) {
@@ -63,7 +63,7 @@ public class GameModel implements EventHandler<KeyEvent> {
                     case 0: {
                         if(i == 8 && j == 12)
                             spaces[i][j] = new Space(false, true, false);
-                        else if (gameMap[i][j - 1] != 4 && gameMap[i][j + 1] != 4)
+                        else if (gameMap[i][j - 1] == 4 || gameMap[i][j + 1] == 4)
                             spaces[i][j] = new Space(false, false, false);
                         else
                             spaces[i][j] = new Space();
@@ -85,6 +85,8 @@ public class GameModel implements EventHandler<KeyEvent> {
                         ii++;
                         break;
                     }
+                default:
+                    break;
                 }
             }
             /*if (gameMap[i][j] == 0) {
@@ -105,6 +107,8 @@ public class GameModel implements EventHandler<KeyEvent> {
     public void setGameView(GameView gameView) {
         this.gameView = gameView;
         pac.setGameView(gameView);
+        for (int i = 0; i < 8; i++)
+            ghosts[i].setGameView(gameView);
     }
 
     public int[][] getGameMap() {
@@ -119,6 +123,15 @@ public class GameModel implements EventHandler<KeyEvent> {
         return pac;
     }
 
+    public void start() {
+        pac.start();
+        for (int i = 0; i < 8; i++)
+            ghosts[i].start();
+    }
+
+    public Ghost[] getGhosts() {
+        return ghosts;
+    }
 
     @Override
     public void handle(KeyEvent event) {
@@ -137,5 +150,4 @@ public class GameModel implements EventHandler<KeyEvent> {
         if (points == 0)
             System.out.println("You Win!!!");
     }
-
 }
