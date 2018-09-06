@@ -20,17 +20,42 @@ public class ControllersManager {
         this.MMController.setCManager(this);
     }
 
+    public MainMenuController getMMController() {
+        return MMController;
+    }
+
     public void addSignInWindowController(SignInWindowController SIWController, Stage stage) {
         this.SIWController = SIWController;
         this.SIWController.setStage(stage);
         this.SIWController.setCManager(this);
     }
 
+    public SignInWindowController getSIWController() {
+        return SIWController;
+    }
+
     public void setNickname(String Nickname) {
         MMController.setNickname(Nickname);
+        mainApp.setNickname(true, Nickname);
+    }
+
+    public void offNickname() {
+        mainApp.setNickname(false, "");
     }
 
     public void StartGame() {
-        mainApp.StartGame();
+        mainApp.startGame();
+    }
+
+    public void StartReplay() {
+        mainApp.startReplay();
+    }
+
+    public void stopApp() {
+        try {
+            //mainApp.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

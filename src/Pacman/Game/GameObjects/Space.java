@@ -1,32 +1,41 @@
 package Pacman.Game.GameObjects;
 
 public class Space {
+    private boolean isPoint = true;
+    private boolean isCherry = false;
+    private boolean isUltimate = false;
 
-    public boolean isPoint = true;
-    public boolean isUltimate = false;
-    public boolean isCherry = false;
-
-    public Space(boolean isPoint, boolean isUltimate, boolean isCherry) {
+    public Space(boolean isPoint, boolean isCherry, boolean isUltimate) {
         this.isPoint = isPoint;
-        this.isUltimate = isUltimate;
         this.isCherry = isCherry;
+        this.isUltimate = isUltimate;
     }
 
     public Space() {
-        isPoint = true;
-        isCherry = false;
-        isUltimate = false;
+
     }
 
     public boolean isEmpty() {
-        if(isPoint || isCherry || isUltimate)
+        if (isPoint || isCherry || isUltimate)
             return false;
         return true;
     }
 
-    public void Empty() {
+    public void eaten() {
         if (isPoint) isPoint = false;
         else if (isCherry) isCherry = false;
         else if (isUltimate) isUltimate = false;
+    }
+
+    public boolean isPoint() {
+        return isPoint;
+    }
+
+    public boolean isCherry() {
+        return isCherry;
+    }
+
+    public boolean isUltimate() {
+        return isUltimate;
     }
 }

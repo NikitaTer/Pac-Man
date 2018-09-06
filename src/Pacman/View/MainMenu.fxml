@@ -20,8 +20,8 @@
          <children>
             <TableView fx:id="RecordsTable" prefHeight="200.0" prefWidth="200.0">
               <columns>
-                <TableColumn fx:id="NicknamesTableCol" prefWidth="99.0" resizable="false" text="Игрок" />
-                <TableColumn fx:id="RecordsTableCol" prefWidth="99.0" resizable="false" text="Рекорд" />
+                <TableColumn fx:id="nicknamesTableCol" prefWidth="99.0" resizable="false" text="Игрок" />
+                <TableColumn fx:id="recordsTableCol" prefWidth="99.0" resizable="false" text="Рекорд" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -30,6 +30,7 @@
             <VBox fx:id="ButtonsVBox" spacing="10.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0">
                <children>
                   <Button fx:id="StartButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="150.0" text="Начать игру" textAlignment="CENTER" />
+                  <Button fx:id="replayButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="150.0" text="Реплей" textAlignment="CENTER" />
                   <Button fx:id="RecordsButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="150.0" text="Рекорды" textAlignment="CENTER" />
                   <Button fx:id="CloseButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="150.0" text="Закрыть" textAlignment="CENTER" />
                </children>
